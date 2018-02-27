@@ -1,65 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta charset="UTF-8">
-    <title>MumbaiIndians</title>
+    <meta name = "viewport" content = "width=device-width" initial-scale = 1>
+    <title>cricket</title>
+    <link href="build.css" rel="stylesheet">
 </head>
+
 <body class="index-body">
     <main class="game container">
         <section class="game__info">
-            <h1 class="game__name">Cricet</h1>
-            <p class="game__text"></p>
-            <div class="game__score">
+            <h1 class="game__title game__info-block">Cricket</h1>
+            <p class="game__text game__info-block">Stop the run chase!</p>
+            <div class="game__score game__info-block">
                 <h2 class="game__title">Total Runs</h2>
                 <ul class="game__list">
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--score">0</span>
                     </li>
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--score">0</span>
                     </li>
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--score">0</span>
                     </li>
                 </ul>
             </div>
-            <div class="game__time">
+
+            <div class="game__time game__info-block">
                 <h2 class="game__title">Time remaining</h2>
                 <ul class="game__list">
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--time">0</span>
                     </li>
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--time">0</span>
                     </li>
-                    <li class="game__item">
+                    <li class="game__item game__item--delimiter">
                         <div class="game__imitation-elem game__imitation-elem--delimiter"></div>
                         <div class="game__imitation-elem game__imitation-elem--delimiter"></div>
                     </li>
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--time">0</span>
                     </li>
                     <li class="game__item">
                         <div class="game__imitation-elem"></div>
                         <div class="game__imitation-elem"></div>
-                        <span game__text>0</span>
+                        <span class="game__number game__number--time">0</span>
                     </li>
                 </ul>
             </div>
         </section>
         <section class="game__window">
+            <canvas></canvas>
         </section>
     </main>
 </body>

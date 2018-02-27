@@ -1,0 +1,126 @@
+@import "variables";
+
+.game {
+  display: flex;
+
+  &__title,
+  &__text,
+  &__list,
+  &__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 32%;
+
+    margin-right: 3%;
+
+    &-block {
+      display: block;
+      margin-bottom: 40px;
+
+      &:last-child {
+      margin-bottom: 0;
+    }
+    }
+  }
+
+  &__window {
+    flex-basis: 67%;
+    min-height: 800px;
+
+    background-image: url("img/india-map.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  &__score,
+  &__time {
+    background-color: $contrast-cl;
+  }
+
+  &__score {
+    width: 67%;
+  }
+
+  &__time {
+    width: 100%;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+
+    list-style: none;
+  }
+
+  &__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-right: 4px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &--delimiter {
+      justify-content: center;
+    }
+  }
+
+  &__imitation-elem {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 4px;
+
+    background-color: $other-contrast-cl;
+    border-radius: 5px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &--delimiter {
+      width: 20px;
+      height: 20px;
+
+      background-color: $main-cl;
+      border-radius: 50%;
+
+      &:last-child {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  &__title {
+    display: block;
+    width: 100%;
+    padding: 20px 0;
+
+    text-align: center;
+    font-size: 1em;
+    font-weight: $font-weight;
+
+    background-color: $contrast-cl;
+    border-radius: 5px;
+  }
+
+  &__number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 4em;
+    font-weight: $font-bold;
+  }
+}

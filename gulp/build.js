@@ -35,7 +35,6 @@ gulp.task('sass', function() {
             cascade: 'false',
             browsers: ['last 50 versions']
         }))
-        .pipe(csso())
         .pipe(gulp.dest(paths.path.dist))
 });
 
@@ -71,7 +70,7 @@ gulp.task('svg', function() {
                symbols: 'svg.html'
            }
        }))
-       .pipe(gulp.dest(path.join(paths.path.templates, '/pages')));
+       .pipe(gulp.dest(path.join(paths.path.src, '/components')));
 });
 
 //js

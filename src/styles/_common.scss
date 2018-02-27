@@ -1,0 +1,34 @@
+@import "variables";
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: $font-family;
+  font-weight: $font-weight;
+  font-size: $font-main-sz;
+  line-height: 1.5em;
+
+  color: $main-cl;
+}
+
+.index-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: $bg-cl;
+  background-image: url("img/bg-pattern.png");
+  background-repeat: repeat;
+}
+
+.container {
+  flex-basis: 90%;
+  max-width: $wide-sz;
+
+}
