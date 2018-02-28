@@ -10,6 +10,10 @@ var gulp = require('gulp'), // Сообственно Gulp JS
     pug = require('gulp-pug'), // pug
     sync = require('browser-sync').create(), // Автообновление страницы
     babel = require('gulp-babel'),
+    browserify = require('browserify'),
+    babelify = require('babelify'),
+    source = require('vinyl-source-stream'),
+    gutil = require('gutil'),
     path = require('path'); // библиотека для работы с директориями
 
 //for svg
@@ -46,41 +50,49 @@ gulp.task('img', function() {
 });
 
 // collect svg
-gulp.task('svg', function() {
-   return gulp.src(paths.path.svg)
-       .pipe(svgmin({
-           js2svg: {
-               pretty:true
-           }
-       }))
-       .pipe(cheerio({
-           run: function ($) {
-               $('*[fill]').removeAttr('fill');
-               $('*[style]').removeAttr('style');
-               $('style').remove();
-               parserOptions: { xmlMode: true }
-           }
-       }))
-       .pipe(replace('&gt;', '>'))
-       .pipe(svgSprite({
-           mode: 'symbols',
-           preview: false,
-           selector: 'icon-%f',
-           svg: {
-               symbols: 'svg.html'
-           }
-       }))
-       .pipe(gulp.dest(path.join(paths.path.src, '/components')));
-});
+// gulp.task('svg', function() {
+//    return gulp.src(paths.path.svg)
+//        .pipe(svgmin({
+//            js2svg: {
+//                pretty:true
+//            }
+//        }))
+//        .pipe(cheerio({
+//            run: function ($) {
+//                $('*[fill]').removeAttr('fill');
+//                $('*[style]').removeAttr('style');
+//                $('style').remove();
+//                parserOptions: { xmlMode: true }
+//            }
+//        }))
+//        .pipe(replace('&gt;', '>'))
+//        .pipe(svgSprite({
+//            mode: 'symbols',
+//            preview: false,
+//            selector: 'icon-%f',
+//            svg: {
+//                symbols: 'svg.html'
+//            }
+//        }))
+//        .pipe(gulp.dest(paths.path.dist, '/img'));
+// });
 
 //js
 
 gulp.task('js', () => {
-    return gulp.src(paths.path.js)
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(gulp.dest(paths.path.dist));
+   browserify({
+       entries: paths.path.js,
+       debug: true
+   })
+       .transform(babelify.configure({
+           presets: ['es2015']
+       }))
+       .on('error',gutil.log)
+       .bundle()
+       .on('error',gutil.log)
+       .pipe(source('main.js'))
+       .pipe(gulp.dest(paths.path.dist));
+
 });
 
-gulp.task('build', ['html', 'sass', 'img', 'svg'], function () {});
+gulp.task('build', ['html', 'js', 'sass', 'img'], function () {});

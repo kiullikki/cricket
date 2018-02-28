@@ -33,11 +33,6 @@
   &__window {
     flex-basis: 67%;
     min-height: 800px;
-
-    background-image: url("img/india-map.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
   }
 
   &__score,
@@ -124,3 +119,12 @@
     font-weight: $font-bold;
   }
 }
+
+.hidden {
+  display: none;
+}
+
+//canvas {
+//  width: 100%;
+//  height: 100%;
+//}

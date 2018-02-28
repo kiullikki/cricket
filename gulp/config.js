@@ -7,5 +7,6 @@ exports.path = {
     'img': 'src/img/**/*.*',
     'svg': 'src/svg/*.svg',
     'src': 'src',
-    'js': 'src/js/main.js'
+    'js': 'src/js/main.js',
+    'modulesJs': 'src/js/modules/**/*.js'
 };
