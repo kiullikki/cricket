@@ -27,6 +27,7 @@ export class Line {
         this.ctx.strokeStyle = this.colors.line;
         this.ctx.lineWidth = this.sizes.line;
         this.ctx.stroke();
+        this.ctx.closePath();
     }
     drawMarker(coords, pathImg) {
       const img = new Image(),

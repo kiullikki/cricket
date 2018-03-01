@@ -17,6 +17,10 @@ export class CanvasItem {
         this.pathes = pathes;
         this.stadiums = stadiums;
         this.coordsStart = coordsStart;
+        this.coordsTest = {
+          x: "150",
+          y: "150"
+        };
         this.colors = colors;
         this.sizes = drawElemSizes;
         this.linesPath = [];
@@ -52,7 +56,7 @@ export class CanvasItem {
         });
     }
     createBalls() {
-      let ballCenter = new Ball(this.ctx, this.coordsStart, this.sizes.ball, this.colors.ball);
+      let ballCenter = new Ball(this.ctx, this.coordsTest, this.sizes.ball, this.colors.ball);
     }
 
     createCenter() {
@@ -63,5 +67,6 @@ export class CanvasItem {
         this.ctx.lineWidth = 1;
         this.ctx.fill();
         this.ctx.stroke();
+        this.ctx.closePath();
     }
 }
