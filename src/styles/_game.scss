@@ -31,8 +31,12 @@
   }
 
   &__window {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     flex-basis: 67%;
-    min-height: 800px;
+    min-height: 647px;
   }
 
   &__score,
