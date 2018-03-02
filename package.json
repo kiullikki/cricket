@@ -32,5 +32,8 @@
     "gulp-svgmin": "^1.2.4",
     "gutil": "^1.6.4",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "bezier-js": "^2.2.5"
   }
 }

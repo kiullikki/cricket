@@ -1,12 +1,16 @@
 import {CanvasItem} from "./modules/canvas-item";
 
-
 // const and variables
 
 const canvasNode = document.getElementById('game-field'),
       coordsStart = {
         x: "200",
         y: "290"
+      },
+
+      coordsTest = {
+          x: "150",
+          y: "380"
       },
 
       pathes = {
@@ -25,7 +29,7 @@ const canvasNode = document.getElementById('game-field'),
       drawElemSizes = {
         line: "3",
         center: "7",
-        ball: "21",
+        ball: "12",
         markerWidth: "20",
         markerHeight: "29"
       },
@@ -144,3 +148,16 @@ const canvasNode = document.getElementById('game-field'),
       ];
 
 let canvasItem = new CanvasItem(canvasNode, pathes, stadiums, coordsStart, colors, drawElemSizes);
+
+
+canvasItem.addToQueue({ data: coordsTest, type: 'createBalls'});
+
+let draw = function(domElem) {
+  const ctx = domElem.getContext('2d'),
+        width = +domElem.getAttribute('data-width'),
+        height = +domElem.getAttribute('data-height');
+
+  ctx.clearRect(0, 0, width, height);
+};
+
+draw(canvasNode);

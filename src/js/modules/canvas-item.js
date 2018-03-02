@@ -24,20 +24,32 @@ export class CanvasItem {
         this.colors = colors;
         this.sizes = drawElemSizes;
         this.linesPath = [];
-
+        this.queqe = [];
 
         this.init();
-
+    }
+    setDelay(delay){
+        this.delay = delay;
     }
     init(){
+        this.draw();
+    }
+    draw(){
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
         this.canvas.width = +this.canvas.getAttribute('data-width');
         this.canvas.height = +this.canvas.getAttribute('data-height');
         this.drawBackground().then(() => {
-            this.createLines();
-            this.createCenter();
-            this.createBalls();
-        });
+            this.createLines().then(()=>{
+                this.createCenter();
+                console.log(this.linesPath);
+                this.createBalls(this.linesPath[3].linePoints[18]);
+                this.queqe.forEach( action => {
+                    action.data ? this[action.type](action.data) : this[action.type]();
+                })
+            });
 
+        });
     }
     drawBackground() {
         const img = new Image();
@@ -50,13 +62,31 @@ export class CanvasItem {
         })
 
     }
-    createLines() {
-        this.stadiums.forEach( (stadium, index) => {
-            this.linesPath.push(new Line(stadium.coords, index, this.coordsStart, this.ctx, this.colors, this.sizes, this.pathes))
-        });
+
+    addToQueue(action){
+        this.queqe.push(action);
     }
-    createBalls() {
-      let ballCenter = new Ball(this.ctx, this.coordsTest, this.sizes.ball, this.colors.ball);
+    createLines() {
+        return new Promise((resolve, reject) => {
+            this.stadiums.forEach((stadium, index) => {
+                this.linesPath.push(new Line(stadium.coords, index, this.coordsStart, this.ctx, this.colors, this.sizes, this.pathes));
+                if((this.stadiums.length - 1) === index) {
+                    let waitResolve = setInterval(() => {
+                       if(this.linesPath[this.linesPath.length - 1].done){
+                           clearInterval(waitResolve);
+                           resolve();
+                       }
+                    },10)
+                }
+
+            });
+        });
+
+    }
+
+
+    createBalls(coords) {
+      let ballCenter = new Ball(this.ctx, coords, this.sizes.ball, this.colors.ball);
     }
 
     createCenter() {
