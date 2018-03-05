@@ -17,76 +17,103 @@ export class CanvasItem {
         this.pathes = pathes;
         this.stadiums = stadiums;
         this.coordsStart = coordsStart;
-        this.coordsTest = {
-          x: "150",
-          y: "150"
-        };
         this.colors = colors;
         this.sizes = drawElemSizes;
         this.linesPath = [];
         this.queqe = [];
+        // this.rendered = false;
 
         this.init();
-    }
-    setDelay(delay){
-        this.delay = delay;
     }
     init(){
         this.draw();
     }
-    draw(){
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+
+    clear(){
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+
+    afterInitOther() {
+        return new Promise(resolve => {
+            let wait = setInterval(() => {
+                if(this.rendered){
+                    clearInterval(wait);
+                    resolve();
+                }
+            }, 10)
+        })
+    }
+
+    afterInitOther() {
+        returngit  Promise.resolve();
+    }
+
+
+    // drawOther(callback) {
+    //     this.canvas.width = +this.canvas.getAttribute('data-width');
+    //     this.canvas.height = +this.canvas.getAttribute('data-height');
+    //     this.drawBackground().then(() => {
+    //         this.createLines().then(() => {
+    //             this.rendered = true;
+    //             // if(callback){
+    //             //     callback();
+    //             // }
+    //         });
+    //     });
+    // }
+
+    draw(){
         this.canvas.width = +this.canvas.getAttribute('data-width');
         this.canvas.height = +this.canvas.getAttribute('data-height');
-        this.drawBackground().then(() => {
-            this.createLines().then(()=>{
-                this.createCenter();
-                console.log(this.linesPath);
-                this.createBalls(this.linesPath[3].linePoints[18]);
-                this.queqe.forEach( action => {
-                    action.data ? this[action.type](action.data) : this[action.type]();
-                })
-            });
+        this.createLines();
+        };
 
-        });
-    }
     drawBackground() {
-        const img = new Image();
-        img.src = this.pathes.bg;
-        return new Promise((resolve, reject)=>{
-            img.onload = () => {
-                this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-                resolve();
-            };
-        })
+        // const img = new Image();
+        // img.src = this.pathes.bg;
+        // return new Promise((resolve, reject)=>{
+        //     img.onload = () => {
+        //         this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+        //         resolve();
+        //     };
+        // })
+
+        return Promise.resolve();
 
     }
 
     addToQueue(action){
         this.queqe.push(action);
     }
-    createLines() {
-        return new Promise((resolve, reject) => {
-            this.stadiums.forEach((stadium, index) => {
-                this.linesPath.push(new Line(stadium.coords, index, this.coordsStart, this.ctx, this.colors, this.sizes, this.pathes));
-                if((this.stadiums.length - 1) === index) {
-                    let waitResolve = setInterval(() => {
-                       if(this.linesPath[this.linesPath.length - 1].done){
-                           clearInterval(waitResolve);
-                           resolve();
-                       }
-                    },10)
-                }
 
-            });
+    createLines() {
+        this.stadiums.forEach((stadium, index) => {
+            this.linesPath.push(new Line(stadium.coords, index, this.coordsStart, this.ctx, this.colors, this.sizes, this.pathes));
         });
 
     }
 
+    // createLinesOther() {
+    //     return new Promise((resolve, reject) => {
+    //         this.stadiums.forEach((stadium, index) => {
+    //             this.linesPath.push(new Line(stadium.coords, index, this.coordsStart, this.ctx, this.colors, this.sizes, this.pathes));
+    //             if((this.stadiums.length - 1) === index) {
+    //                 let waitResolve = setInterval(() => {
+    //                    if(this.linesPath[this.linesPath.length - 1].done){
+    //                        clearInterval(waitResolve);
+    //                        resolve();
+    //                    }
+    //                 },10)
+    //             }
+    //         });
+    //     });
+    // }
 
-    createBalls(coords) {
-      let ballCenter = new Ball(this.ctx, coords, this.sizes.ball, this.colors.ball);
+
+    createBall(coords) {
+        new Ball(this.ctx, coords, this.sizes.ball, this.colors.ball);
     }
 
     createCenter() {

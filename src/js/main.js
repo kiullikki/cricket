@@ -16,7 +16,7 @@ const canvasNode = document.getElementById('game-field'),
       pathes = {
             bg: "img/india-map.svg",
             marker: "img/marker.png",
-            markerPoint: "img/marker-poin.svg"
+            markerPoint: "img/marker-point.svg"
           },
 
       colors = {
@@ -147,17 +147,122 @@ const canvasNode = document.getElementById('game-field'),
         }
       ];
 
+
+//render
+
+// const preRenderBlock = document.getElementById('prerender');
+//
+// let imgSources =  (() =>{
+//     const values = [];
+//     for(let i in pathes ){
+//         if(pathes.hasOwnProperty(i)) {
+//             values.push(pathes[i]);
+//         }
+//     }
+//     return values;
+// })();
+//
+// let loadImg = function(values, index){
+//     let imgNode = document.createElement('img');
+//   imgNode.alt ='';
+//   imgNode.setAttribute('area-hidden','true');
+//   imgNode.src = values[index];
+//   let doneLoad = false;
+//   imgNode.onload =  function(){
+//       preRenderBlock.appendChild(imgNode);
+//       if(values.length > index + 1) {
+//           loadImg(values, index+1)
+//       } else {
+//           loadImg.status = true;
+//       }
+//   }
+// };
+//
+// let isRendered = function() {
+//   loadImg(imgSources, 0);
+//   return new Promise((resolve) => {
+//       let timer =  setInterval( ()=>{
+//           if(loadImg.status){
+//               clearInterval(timer);
+//               resolve();
+//           }
+//       }, 10)
+//   })
+//
+// };
+//
+// isRendered().then(() => {
+//   debugger
+// });
+
+// render
+
+// other
+
+// canvasItem.afterInit().then( () => {
+//     let index = 0;
+//     let timeOut = 200;
+//     let time = Date.now();
+//     let points = canvasItem.linesPath[0].linePoints;
+//
+//     let animationBall = function() {
+//         if(index >= points.length -1) {
+//             cancelAnimationFrame(animationBall);
+//         } else {
+//             canvasItem.clear();
+//             canvasItem.draw(() => {
+//                 let currentTime = Date.now();
+//                 if(currentTime - timeOut >=  time){
+//                     index ++;
+//                     time = Date.now();
+//                     canvasItem.createBall(points[index]);
+//                     console.log(index)
+//                 }
+//                 else {
+//                     console.log(index);
+//                     canvasItem.createBall(points[index]);
+//                 }
+//                 window.requestAnimationFrame(animationBall);
+//             });
+//         }
+//     };
+//     animationBall();
+// });
+
+
+//other
+
+
+
+
 let canvasItem = new CanvasItem(canvasNode, pathes, stadiums, coordsStart, colors, drawElemSizes);
 
+canvasItem.afterInit().then( () => {
+    let index = 0;
+    let timeOut = 200;
+    let time = Date.now();
+    let points = canvasItem.linesPath[0].linePoints;
 
-canvasItem.addToQueue({ data: coordsTest, type: 'createBalls'});
+    let animationBall = function() {
+      if(index >= points.length -1) {
+        cancelAnimationFrame(animationBall);
+      } else {
+        let currentTime = Date.now();
+        canvasItem.clear();
+        canvasItem.draw();
+        if(currentTime - timeOut >=  time){
+            index ++;
+            time = Date.now();
+            canvasItem.createBall(points[index]);
+            console.log(index)
+        }
+        else {
+            console.log(index);
+            canvasItem.createBall(points[index]);
+        }
+        window.requestAnimationFrame(animationBall);
+      }
+    };
+    animationBall();
+  });
 
-let draw = function(domElem) {
-  const ctx = domElem.getContext('2d'),
-        width = +domElem.getAttribute('data-width'),
-        height = +domElem.getAttribute('data-height');
-
-  ctx.clearRect(0, 0, width, height);
-};
-
-draw(canvasNode);

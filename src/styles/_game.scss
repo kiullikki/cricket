@@ -37,6 +37,11 @@
 
     flex-basis: 67%;
     min-height: 647px;
+
+    background-image: url("img/india-map.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 
   &__score,

@@ -23,7 +23,7 @@ export class Line {
         this.getSegments(this.coords, this.coordsStart, 19);
         this.drawMarker(this.coords, this.pathes.marker);
     }
-    drawLine(coords, coordsStart, pathMarker) {
+    drawLine(coords, coordsStart) {
         this.ctx.beginPath();
         this.ctx.moveTo(coordsStart.x, coordsStart.y);
         this.ctx.bezierCurveTo(coords.xControlOne, coords.yControlOne, coords.xControlTwo, coords.yControlTwo, coords.xEnd, coords.yEnd);
@@ -34,14 +34,16 @@ export class Line {
     }
 
     drawMarker(coords, pathImg) {
-        const img = new Image(),
-              x = coords.xEnd - (this.sizes.markerWidth / 2),
-              y = coords.yEnd - this.sizes.markerHeight;
-        img.src = pathImg;
-        img.onload = () => {
-            this.ctx.drawImage(img, x, y, this.sizes.markerWidth, this.sizes.markerHeight)
-           this.done = true;
-        };
+        // const img = new Image(),
+        //       x = coords.xEnd - (this.sizes.markerWidth / 2),
+        //       y = coords.yEnd - this.sizes.markerHeight;
+        // img.src = pathImg;
+        // img.onload = () => {
+        //     this.ctx.drawImage(img, x, y, this.sizes.markerWidth, this.sizes.markerHeight)
+        //    this.done = true;
+        // };
+
+        this.done = true;
     }
     getSegments(coords, coordsStart, qtSegments) {
         const curve = new Bezier(coordsStart.x, coordsStart.y, coords.xControlOne, coords.yControlOne, coords.xControlTwo, coords.yControlTwo, coords.xEnd, coords.yEnd);
