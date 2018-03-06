@@ -7,42 +7,53 @@
  * colors: object;
  * drawElemSizes: object;
  */
-import {Line} from "./draw-path";
+import {Line} from "./draw-lines";
 import {Ball} from "./draw-ball";
+import {animation} from "./animation-ball";
 
 export class CanvasItem {
-    constructor(domElement, pathes, stadiums, coordsStart, colors, drawElemSizes) {
-        this.canvas = domElement;
+    constructor(canvasNode, canvasData) {
+        this.canvas = canvasNode;
         this.ctx = this.canvas.getContext('2d');
-        this.pathes = pathes;
-        this.stadiums = stadiums;
-        this.coordsStart = coordsStart;
-        this.colors = colors;
-        this.sizes = drawElemSizes;
-        this.linesPath = [];
-
-        this.init();
-    }
-    init(){
-        this.draw();
+        this.pathes = canvasData.pathes;
+        this.stadiums = canvasData.stadiums;
+        this.coordsStart = canvasData.coordsStart;
+        this.colors = canvasData.colors;
+        this.sizes = canvasData.drawElemSizes;
+        this.lines = [];
+        this.lineData = {};
+        this.rendered = false;
     }
 
+    init() {
+        return new Promise((resolve, reject) => {
+            this.draw();
+            this.createBall(this.coordsStart);
+            resolve();
+        });
+    }
 
-    clear(){
+    clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    draw(){
+    draw() {
         this.canvas.width = +this.canvas.getAttribute('data-width');
         this.canvas.height = +this.canvas.getAttribute('data-height');
         this.createLines();
-        };
+        this.createCenter();
+    }
 
     createLines() {
-        this.stadiums.forEach((stadium, index) => {
-            this.linesPath.push(new Line(stadium.coords, index, this.coordsStart, this.ctx, this.colors, this.sizes, this.pathes));
-        });
+        this.lineData.coordsStart = this.coordsStart;
+        this.lineData.ctx = this.ctx;
+        this.lineData.size = this.sizes.line;
+        this.lineData.color = this.colors.line;
+        this.lineData.pathesMarker = this.pathes;
 
+        this.stadiums.forEach((stadium, index) => {
+            this.lines.push(new Line(stadium.coords, index, this.lineData));
+        });
     }
 
     createBall(coords) {
@@ -59,4 +70,30 @@ export class CanvasItem {
         this.ctx.stroke();
         this.ctx.closePath();
     }
+
+    animateBall(points, timeOut) {
+        new animation(points, this, timeOut);
+
+        // let animationBall = (() => {
+        //     if (index >= points.length - 1) {
+        //         cancelAnimationFrame(animationBall);
+        //     } else {
+        //         let currentTime = Date.now();
+        //         this.clear();
+        //         this.draw();
+        //         if (currentTime - timeOut >= time) {
+        //             index++;
+        //             time = Date.now();
+        //             this.createBall(points[index]);
+        //         }
+        //         else {
+        //             this.createBall(points[index]);
+        //         }
+        //         window.requestAnimationFrame(animationBall);
+        //     }
+        // });
+
+        // animationBall();
+    }
+
 }

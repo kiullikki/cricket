@@ -7,7 +7,7 @@
  * colors: object;
  * drawElemSizes: object;
  */
-import {Line} from "./draw-path";
+import {Line} from "./draw-lines";
 import {Ball} from "./draw-ball";
 
 export class CanvasItem {
