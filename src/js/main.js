@@ -149,50 +149,57 @@ const
         ]
 };
 
+// let animate = function(points) {
+//     let index = 0;
+//     let timeOut = 5;
+//     let time = Date.now();
+//     let animationBall = function () {
+//         if (index >= points.length - 1) {
+//             cancelAnimationFrame(animationBall);
+//         } else {
+//             let currentTime = Date.now();
+//             canvasItem.clear();
+//             canvasItem.draw();
+//             if (currentTime - timeOut >= time) {
+//                 index++;
+//                 time = Date.now();
+//                 canvasItem.createBall(points[index]);
+//             }
+//             else {
+//                 canvasItem.createBall(points[index]);
+//             }
+//             window.requestAnimationFrame(animationBall);
+//         }
+//     };
+//
+//     animationBall();
+// };
+
+let getRandomInteger = function (min, max) {
+    return Math.floor(min + Math.random() * (max + 1 - min));
+};
 
 let canvasItem = new CanvasItem(canvasNode, canvasData);
 
 canvasItem.init().then(() => {
-    let points1 =  canvasItem.lines[0].lineCoords;
-    let points2 =  canvasItem.lines[7].lineCoords;
-    let points3 =  canvasItem.lines[3].lineCoords;
-    let timeOut = 5;
-
-    // let animate = function(points) {
-    //     let index = 0;
-    //     let timeOut = 5;
-    //     let time = Date.now();
-    //     let animationBall = function () {
-    //         if (index >= points.length - 1) {
-    //             cancelAnimationFrame(animationBall);
-    //         } else {
-    //             let currentTime = Date.now();
-    //             canvasItem.clear();
-    //             canvasItem.draw();
-    //             if (currentTime - timeOut >= time) {
-    //                 index++;
-    //                 time = Date.now();
-    //                 canvasItem.createBall(points[index]);
-    //             }
-    //             else {
-    //                 canvasItem.createBall(points[index]);
-    //             }
-    //             window.requestAnimationFrame(animationBall);
-    //         }
-    //     };
-    //
-    //     animationBall();
-    // };
-
-
-    // canvasItem.animateBall(points2, timeOut);
-    // canvasItem.animateBall(points3, timeOut);
-
+    // let points1 =  canvasItem.lines[0].lineCoords;
+    // let points2 =  canvasItem.lines[7].lineCoords;
+    // let points3 =  canvasItem.lines[3].lineCoords;
+    let timeOut = 10;
+    let qtBalls = 120;
     let balls = new AimationBalls(canvasItem);
-    balls.add(new BallsAnimationInfo(points1, timeOut));
-    balls.add(new BallsAnimationInfo(points2, timeOut));
-    balls.add(new BallsAnimationInfo(points3, timeOut));
-    balls.start();
+
+
+    let startAllBalls = function (quantity) {
+        for (let i = 0; i < quantity; i++) {
+            let numberLine = getRandomInteger(0, 9);
+            let points = canvasItem.lines[numberLine].lineCoords;
+
+            balls.add(new BallsAnimationInfo(points, timeOut));
+        };
+        balls.start();
+    };
+    startAllBalls(qtBalls);
 });
 
 

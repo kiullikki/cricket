@@ -44,7 +44,7 @@ export class AimationBalls {
     }
 
     finishAnimation(num) {
-        this.balls[num] = undefined;
+        window.cancelAnimationFrame(this.startAnimation.bind(this));
     }
 
 

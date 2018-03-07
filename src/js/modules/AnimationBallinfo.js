@@ -5,6 +5,4 @@ export class BallsAnimationInfo {
         this.index = (argIndex == undefined) ? 0 : argIndex;
         this.time = Date.now();
     }
-
-
 }
