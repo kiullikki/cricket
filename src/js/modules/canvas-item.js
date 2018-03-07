@@ -72,7 +72,7 @@ export class CanvasItem {
     }
 
     animateBall(points, timeOut) {
-        new animation(points, this, timeOut);
+        return new animateBall()
 
         // let animationBall = (() => {
         //     if (index >= points.length - 1) {

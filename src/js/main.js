@@ -1,4 +1,6 @@
 import {CanvasItem} from "./modules/canvas-item";
+import {AimationBalls} from "./modules/animation-ball";
+import {BallsAnimationInfo} from "./modules/AnimationBallinfo";
 
 // const and variables
 
@@ -182,9 +184,15 @@ canvasItem.init().then(() => {
     //     animationBall();
     // };
 
-    canvasItem.animateBall(points1, timeOut);
-    canvasItem.animateBall(points2, timeOut);
-    canvasItem.animateBall(points3, timeOut);
+
+    // canvasItem.animateBall(points2, timeOut);
+    // canvasItem.animateBall(points3, timeOut);
+
+    let balls = new AimationBalls(canvasItem);
+    balls.add(new BallsAnimationInfo(points1, timeOut));
+    balls.add(new BallsAnimationInfo(points2, timeOut));
+    balls.add(new BallsAnimationInfo(points3, timeOut));
+    balls.start();
 });
 
 

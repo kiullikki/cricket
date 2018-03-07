@@ -4,44 +4,47 @@
  *
  */
 
-export class animation {
-    constructor(points, context, timeOut) {
-        this.points = points;
-        this.index = 0;
-        this.timeOut = timeOut;
+export class AimationBalls {
+    constructor(context) {
         this.context = context;
-        this.time = Date.now();
-
-        this.init();
+        this.balls = [];
     }
 
-    init() {
+    add(ballsAnimationInfo){
+        this.balls.push(ballsAnimationInfo);
+    }
+
+    start() {
         this.startAnimation();
     }
 
+
+
     startAnimation() {
-        if (this.index >= this.points.length - 1) {
-            cancelAnimationFrame(this.startAnimation);
-        } else {
-            let currentTime = Date.now();
-            this.context.clear();
-            this.context.draw();
-            if (currentTime - this.timeOut >= this.time) {
-                this.index++;
-                this.time = Date.now();
-                this.context.createBall(this.points[this.index]);
+        this.context.clear();
+        this.context.draw();
+        for(let i = 0; i < this.balls.length; i++) {
+            if (this.balls[i] !== undefined) {
+                if (this.balls[i].index >= this.balls[i].points.length - 1) {
+                    this.finishAnimation(i);
+                } else {
+                    let currentTime = Date.now();
+                    if (currentTime - this.balls[i].timeOut >= this.balls[i].time) {
+                        this.balls[i].index++;
+                        this.balls[i].time = Date.now();
+                        this.context.createBall(this.balls[i].points[this.balls[i].index]);
+                    }
+                    else {
+                        this.context.createBall(this.balls[i].points[this.balls[i].index]);
+                    }
+                }
             }
-            else {
-                this.context.createBall(this.points[this.index]);
-            }
-
-            window.requestAnimationFrame(this.startAnimation.bind(this));
         }
-
+        window.requestAnimationFrame(this.startAnimation.bind(this));
     }
 
-    finishAnimation() {
-
+    finishAnimation(num) {
+        this.balls[num] = undefined;
     }
 
 
