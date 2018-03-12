@@ -7,8 +7,8 @@
  * colors: object;
  * drawElemSizes: object;
  */
-import {Line} from "./draw-lines";
-import {Ball} from "./draw-ball";
+import {Line} from "./line";
+import {Ball} from "./ball";
 
 export class CanvasItem {
     constructor(domElement, pathes, stadiums, coordsStart, colors, drawElemSizes) {

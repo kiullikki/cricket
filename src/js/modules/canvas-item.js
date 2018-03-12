@@ -1,15 +1,10 @@
 /**
  * Creates canvas item
  * @param domElement: HTMLElement;
- * pathImgBg: string;
- * linesCoordinates: array;
- * coordsStart: object;
- * colors: object;
- * drawElemSizes: object;
+ * canvasData: object;
  */
-import {Line} from "./draw-lines";
-import {Ball} from "./draw-ball";
-import {animation} from "./animation-ball";
+import {Line} from "./line";
+import {Ball} from "./ball";
 
 export class CanvasItem {
     constructor(canvasNode, canvasData) {
@@ -51,9 +46,15 @@ export class CanvasItem {
         this.lineData.color = this.colors.line;
         this.lineData.pathesMarker = this.pathes;
 
-        this.stadiums.forEach((stadium, index) => {
-            this.lines.push(new Line(stadium.coords, index, this.lineData));
-        });
+        if (this.lines.length < this.stadiums.length) {
+            this.stadiums.forEach((stadium, index) => {
+                this.lines.push(new Line(stadium.coords, stadium.name, index, this.lineData));
+            });
+        } else {
+            this.lines.forEach((line) => {
+                line.draw(line.coords, this.coordsStart );
+            });
+        }
     }
 
     createBall(coords) {
@@ -70,30 +71,4 @@ export class CanvasItem {
         this.ctx.stroke();
         this.ctx.closePath();
     }
-
-    animateBall(points, timeOut) {
-        return new animateBall()
-
-        // let animationBall = (() => {
-        //     if (index >= points.length - 1) {
-        //         cancelAnimationFrame(animationBall);
-        //     } else {
-        //         let currentTime = Date.now();
-        //         this.clear();
-        //         this.draw();
-        //         if (currentTime - timeOut >= time) {
-        //             index++;
-        //             time = Date.now();
-        //             this.createBall(points[index]);
-        //         }
-        //         else {
-        //             this.createBall(points[index]);
-        //         }
-        //         window.requestAnimationFrame(animationBall);
-        //     }
-        // });
-
-        // animationBall();
-    }
-
 }

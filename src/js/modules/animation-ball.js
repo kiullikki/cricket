@@ -4,48 +4,30 @@
  *
  */
 
-export class AimationBalls {
-    constructor(context) {
-        this.context = context;
-        this.balls = [];
+export class AimationBall {
+    constructor(points, numberLine, timeOut) {
+        this.timeOut = timeOut;
+        this.points = points;
+        this.numberStadium = numberLine;
+        this.index = 0;
+        this.time = Date.now();
+        this.pointsCurrent = this.points[this.index];
+        this.flag = true;
+
     }
 
-    add(ballsAnimationInfo){
-        this.balls.push(ballsAnimationInfo);
-    }
-
-    start() {
-        this.startAnimation();
-    }
-
-
-
-    startAnimation() {
-        this.context.clear();
-        this.context.draw();
-        for(let i = 0; i < this.balls.length; i++) {
-            if (this.balls[i] !== undefined) {
-                if (this.balls[i].index >= this.balls[i].points.length - 1) {
-                    this.finishAnimation(i);
-                } else {
-                    let currentTime = Date.now();
-                    if (currentTime - this.balls[i].timeOut >= this.balls[i].time) {
-                        this.balls[i].index++;
-                        this.balls[i].time = Date.now();
-                        this.context.createBall(this.balls[i].points[this.balls[i].index]);
-                    }
-                    else {
-                        this.context.createBall(this.balls[i].points[this.balls[i].index]);
-                    }
-                }
-            }
+    getNewCoords(){
+        let currentTime = Date.now();
+        if (currentTime - this.timeOut >= this.time) {
+            this.index++;
+            this.time = Date.now();
         }
-        window.requestAnimationFrame(this.startAnimation.bind(this));
-    }
+        if (this.index === this.points.length - 1) {
+            this.flag = false;
+        }
 
-    finishAnimation(num) {
-        window.cancelAnimationFrame(this.startAnimation.bind(this));
+        this.pointsCurrent = this.points[this.index];
+        return this.pointsCurrent;
     }
-
 
 }

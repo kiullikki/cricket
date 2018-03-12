@@ -1,11 +1,14 @@
 import {CanvasItem} from "./modules/canvas-item";
-import {AimationBalls} from "./modules/animation-ball";
-import {BallsAnimationInfo} from "./modules/AnimationBallinfo";
+import {GameManager} from "./modules/game-manager";
 
 // const and variables
 
 const
     canvasNode = document.getElementById('game-field'),
+    timeRemainingNodes = document.querySelectorAll('.game__number--time'),
+    totalRunNodes = document.querySelectorAll('.game__number--score'),
+    gameResultNode= document.querySelector('.game__result'),
+    stadiumNameNode = gameResultNode.querySelector('.game__stadium'),
 
     canvasData = {
 
@@ -30,7 +33,7 @@ const
         drawElemSizes: {
             line: "3",
             center: "7",
-            ball: "12",
+            ball: "10",
             markerWidth: "20",
             markerHeight: "29"
         },
@@ -147,59 +150,55 @@ const
                 }
             }
         ]
+},
+
+gameData = {
+    timeRedrawBall: 15,
+    createBallInterval: 300,
+    timeGame: 20000,
+    allBalls: 60
+},
+
+numberRandom = {
+    numberRndOldest: 0,
+    numberRndOld: 0,
+
+    getRandomInteger: function (min, max) {
+        let numberRnd = Math.floor(min + Math.random() * (max + 1 - min));
+
+        if(numberRnd == numberRandom.numberRndOld || numberRnd == numberRandom.numberRndOldest) {
+            return numberRandom.getRandomInteger(min, max);
+        }
+        numberRandom.numberRndOldest = numberRandom.numberRndOld;
+        numberRandom.numberRndOld = numberRnd;
+        return numberRnd;}
 };
 
-// let animate = function(points) {
-//     let index = 0;
-//     let timeOut = 5;
-//     let time = Date.now();
-//     let animationBall = function () {
-//         if (index >= points.length - 1) {
-//             cancelAnimationFrame(animationBall);
-//         } else {
-//             let currentTime = Date.now();
-//             canvasItem.clear();
-//             canvasItem.draw();
-//             if (currentTime - timeOut >= time) {
-//                 index++;
-//                 time = Date.now();
-//                 canvasItem.createBall(points[index]);
-//             }
-//             else {
-//                 canvasItem.createBall(points[index]);
-//             }
-//             window.requestAnimationFrame(animationBall);
-//         }
-//     };
-//
-//     animationBall();
-// };
-
-let getRandomInteger = function (min, max) {
-    return Math.floor(min + Math.random() * (max + 1 - min));
-};
 
 let canvasItem = new CanvasItem(canvasNode, canvasData);
 
 canvasItem.init().then(() => {
-    // let points1 =  canvasItem.lines[0].lineCoords;
-    // let points2 =  canvasItem.lines[7].lineCoords;
-    // let points3 =  canvasItem.lines[3].lineCoords;
-    let timeOut = 10;
-    let qtBalls = 120;
-    let balls = new AimationBalls(canvasItem);
 
+    let gameManager = new GameManager(gameData, numberRandom,  canvasItem.lines, timeRemainingNodes, totalRunNodes, stadiumNameNode, gameResultNode, animation);
 
-    let startAllBalls = function (quantity) {
-        for (let i = 0; i < quantity; i++) {
-            let numberLine = getRandomInteger(0, 9);
-            let points = canvasItem.lines[numberLine].lineCoords;
+    function animation (){
+        canvasItem.clear();
+        canvasItem.draw();
+        if(gameManager.ballsInfoAnimation) {
+            gameManager.ballsInfoAnimation.forEach((ball, index) => {
+                let pointsCurrent = ball.getNewCoords();
+                if (ball.flag) {
+                    canvasItem.createBall(pointsCurrent);
+                } else {
+                    gameManager.ballsInfoAnimation.splice(index, 1);
+                }
+            });
+        }
+    }
 
-            balls.add(new BallsAnimationInfo(points, timeOut));
-        };
-        balls.start();
+    let canvasClick = function (evt) {
+       gameManager.onClick(evt, canvasData.coordsStart, canvasData.drawElemSizes.ball);
     };
-    startAllBalls(qtBalls);
+
+    canvasNode.addEventListener('click', canvasClick);
 });
-
-
