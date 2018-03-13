@@ -19,7 +19,7 @@ const
 
         pathes: {
             bg: "img/india-map.svg",
-            marker: "img/marker.png",
+            marker: "M8 0c5 0 8 4 8 8 0 5-2 8-8 16-5-8-8-11-8-16 0-4 4-8 8-8zm0 4c3 0 5 2 5 4 0 3-2 5-5 5-2 0-4-2-4-5 0-2 2-4 4-4z",
             markerPoint: "img/marker-point.svg"
         },
 

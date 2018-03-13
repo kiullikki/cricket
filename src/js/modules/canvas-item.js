@@ -5,6 +5,7 @@
  */
 import {Line} from "./line";
 import {Ball} from "./ball";
+import {indiaMap} from "./background-info";
 
 export class CanvasItem {
     constructor(canvasNode, canvasData) {
@@ -37,6 +38,17 @@ export class CanvasItem {
         this.canvas.height = +this.canvas.getAttribute('data-height');
         this.createLines();
         this.createCenter();
+    }
+
+    drawBackground() {
+        let self = this;
+        indiaMap.fills.forEach((fill) => {
+            let bg = new Path2D(fill);
+            self.ctx.fillStyle = indiaMap.fillColor;
+            self.ctx.strokeStyle = indiaMap.strokeColor;
+            self.ctx.fill(bg);
+            self.ctx.stroke(bg);
+        });
     }
 
     createLines() {

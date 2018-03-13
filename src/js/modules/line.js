@@ -1,3 +1,5 @@
+import {indiaMap} from "./background-info";
+
 /**
  * Creates line item
  * @param coords: object;
@@ -27,7 +29,7 @@ export class Line {
     init(){
         this.draw(this.coords, this.coordsStart, this.pathes.marker);
         this.getSegments(this.coords, this.coordsStart);
-        // this.drawMarker(this.coords, this.pathes.marker);
+        //this.drawMarker(this.coords, 10);
     }
 
     draw(coords, coordsStart) {
@@ -47,17 +49,21 @@ export class Line {
             this.ctx.lineTo(this.lineCoords[i].x, this.lineCoords[i].y);
         };
         this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = 2;
         this.ctx.stroke();
     }
 
-    drawMarker(coords, pathMarker) {
-        const img = new Image(),
-              x = coords.xEnd - (this.sizes.markerWidth / 2),
-              y = coords.yEnd - this.sizes.markerHeight;
-        img.src = pathMarker;
-        img.onload = () => {
-            this.ctx.drawImage(img, x, y, this.sizes.markerWidth, this.sizes.markerHeight)
-        };
+    drawMarker(coords, scale) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(+coords.xEnd, +coords.yEnd);
+        this.ctx.lineTo(+coords.xEnd - scale, +coords.yEnd - scale);
+        this.ctx.arcTo(+coords.xEnd - scale, +coords.yEnd - scale, +coords.xEnd + scale, +coords.yEnd - scale, scale / 2);
+        this.ctx.lineTo(+coords.xEnd, +coords.yEnd);
+        this.ctx.closePath();
+        this.ctx.fillStyle = "#13AEF0";
+        this.ctx.strokeStyle = "#0D6991";
+        //this.ctx.fill();
+        this.ctx.stroke();
     }
 
     getSegments(coords, coordsStart) {
