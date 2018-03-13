@@ -96,15 +96,14 @@ export class GameManager {
 
     showResultGame() {
         let scoreMax = this.linesInfo[0].countBallsScore;
-        let nameStadium = "";
+        let nameStadium = this.linesInfo[0].name;
         this.linesInfo.forEach((line) => {
             if(scoreMax < line.countBallsScore){
                 scoreMax = line.countBallsScore;
                 nameStadium = line.name;
             }
         });
-
-        this.stadiumNameNode.innerText = nameStadium;
+        scoreMax === 0 ? this.stadiumNameNode.innerText = "does not exist" : this.stadiumNameNode.innerText = nameStadium;
         this.gameResultNode.classList.toggle('hidden');
 
     }

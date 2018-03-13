@@ -40,6 +40,16 @@ export class Line {
         this.ctx.closePath();
     }
 
+    redraw(index, color) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.coordsStart.x, this.coordsStart.y);
+        for (let i = 0; i < index; i++) {
+            this.ctx.lineTo(this.lineCoords[i].x, this.lineCoords[i].y);
+        };
+        this.ctx.strokeStyle = color;
+        this.ctx.stroke();
+    }
+
     drawMarker(coords, pathMarker) {
         const img = new Image(),
               x = coords.xEnd - (this.sizes.markerWidth / 2),
@@ -52,10 +62,9 @@ export class Line {
 
     getSegments(coords, coordsStart) {
         const curve = new Bezier(coordsStart.x, coordsStart.y, coords.xControlOne, coords.yControlOne, coords.xControlTwo, coords.yControlTwo, coords.xEnd, coords.yEnd),
-              lengthCurve = (coords.yEnd - coordsStart.y) * (coords.yEnd - coordsStart.y) + (coords.xEnd - coordsStart.x) * (coords.xEnd - coordsStart.x),
-              coefCurve = 90,
+              lengthCurve = Math.sqrt((coords.yEnd - coordsStart.y) * (coords.yEnd - coordsStart.y) + (coords.xEnd - coordsStart.x) * (coords.xEnd - coordsStart.x)),
+              coefCurve = 0.6,
               qtSegments = Math.round(lengthCurve / coefCurve);
-
         this.lineCoords = curve.getLUT(qtSegments);
     }
 }

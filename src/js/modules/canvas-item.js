@@ -61,6 +61,10 @@ export class CanvasItem {
         new Ball(this.ctx, coords, this.sizes.ball, this.colors.ball);
     }
 
+    createBallPath(ball) {
+        this.lines[ball.numberStadium].redraw(ball.index, this.colors.ball);
+    }
+
     createCenter() {
         this.ctx.beginPath();
         this.ctx.arc(this.coordsStart.x, this.coordsStart.y, this.sizes.center, 0, Math.PI * 2);

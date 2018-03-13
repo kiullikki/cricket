@@ -179,22 +179,24 @@ let canvasItem = new CanvasItem(canvasNode, canvasData);
 
 canvasItem.init().then(() => {
 
-    let gameManager = new GameManager(gameData, numberRandom,  canvasItem.lines, timeRemainingNodes, totalRunNodes, stadiumNameNode, gameResultNode, animation);
-
-    function animation (){
+    let animation = function (){
         canvasItem.clear();
         canvasItem.draw();
         if(gameManager.ballsInfoAnimation) {
             gameManager.ballsInfoAnimation.forEach((ball, index) => {
                 let pointsCurrent = ball.getNewCoords();
                 if (ball.flag) {
+                    canvasItem.createBallPath(ball);
+                    canvasItem.createCenter();
                     canvasItem.createBall(pointsCurrent);
                 } else {
                     gameManager.ballsInfoAnimation.splice(index, 1);
                 }
             });
         }
-    }
+    };
+
+    let gameManager = new GameManager(gameData, numberRandom,  canvasItem.lines, timeRemainingNodes, totalRunNodes, stadiumNameNode, gameResultNode, animation);
 
     let canvasClick = function (evt) {
        gameManager.onClick(evt, canvasData.coordsStart, canvasData.drawElemSizes.ball);
