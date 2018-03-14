@@ -154,27 +154,11 @@ const
         ]
 },
 
-numberRandom = {
-    numberRndOldest: 0,
-    numberRndOld: 0,
-
-    getRandomInteger: function (min, max) {
-        let numberRnd = Math.floor(min + Math.random() * (max + 1 - min));
-
-        if(numberRnd == numberRandom.numberRndOld || numberRnd == numberRandom.numberRndOldest) {
-            return numberRandom.getRandomInteger(min, max);
-        }
-        numberRandom.numberRndOldest = numberRandom.numberRndOld;
-        numberRandom.numberRndOld = numberRnd;
-        return numberRnd;}
-},
-
 gameData = {
     timeRemainingNodes: timeRemainingNodes,
     totalRunNodes: totalRunNodes,
     stadiumNameNode: stadiumNameNode,
     gameResultNode: gameResultNode,
-    numberRandom: numberRandom,
     timeRedrawBall: 15,
     createBallInterval: 300,
     timeGame: 20000,

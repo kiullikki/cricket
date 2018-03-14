@@ -1,5 +1,3 @@
-import {indiaMap} from "./background-info";
-
 /**
  * Creates line item
  * @param coords: object;
@@ -19,14 +17,14 @@ export class Line {
         this.pathes = lineData.pathes;
         this.sizes = lineData.sizes;
         this.countBallsScore = 0;
-        this.lineCoords = [];
+        this.lineCoords = lineData.lineCoords;
+        this.lineCoordsDraw = lineData.lineCoordsDraw;
 
         this.init();
     }
 
     init(){
         this.draw(this.coords, this.coordsStart, this.pathes.marker);
-        this.getSegments(this.coords, this.coordsStart);
     }
 
     draw(coords, coordsStart) {
@@ -40,33 +38,15 @@ export class Line {
     }
 
     redraw(index, color) {
-        let coordsStart = this.lineCoords[0],
-            flag = true,
-            radius = this.sizes.center / 2 + 3;
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.lineCoordsDraw[0].x, this.lineCoordsDraw[0].y);
 
-        for (let i = 1; i < index; i++) {
-            let distance = Math.sqrt((coordsStart.x - this.lineCoords[i].x) *(coordsStart.x - this.lineCoords[i].x) + (coordsStart.y - this.lineCoords[i].y) * (coordsStart.y - this.lineCoords[i].y));
-
-            if (distance >= radius) {
-                if(flag) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(this.lineCoords[i].x, this.lineCoords[i].y);
-                    flag = false;
-                }
-                this.ctx.lineTo(this.lineCoords[i].x, this.lineCoords[i].y);
-            }
+        for (let i = 0; i < index; i++) {
+            this.ctx.lineTo(this.lineCoordsDraw[i].x, this.lineCoordsDraw[i].y);
         }
 
         this.ctx.strokeStyle = color;
         this.ctx.lineWidth = this.sizes.lineBall;
         this.ctx.stroke();
-    }
-
-    getSegments(coords, coordsStart) {
-        const curve = new Bezier(coordsStart.x, coordsStart.y, coords.xControlOne, coords.yControlOne, coords.xControlTwo, coords.yControlTwo, coords.xEnd, coords.yEnd),
-              lengthCurve = Math.sqrt((coords.yEnd - coordsStart.y) * (coords.yEnd - coordsStart.y) + (coords.xEnd - coordsStart.x) * (coords.xEnd - coordsStart.x)),
-              coefCurve = 0.6,
-              qtSegments = Math.round(lengthCurve / coefCurve);
-        this.lineCoords = curve.getLUT(qtSegments);
     }
 }

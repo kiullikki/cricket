@@ -6,6 +6,7 @@
  */
 
 import {AimationBall} from "./animation-ball";
+import {Helper} from "./helper";
 
 export class GameManager {
     constructor(gameData, linesInfo, animation) {
@@ -18,7 +19,6 @@ export class GameManager {
         this.createBallInterval = gameData.createBallInterval;
         this.timeGame = gameData.timeGame;
         this.countBalls = gameData.allBalls;
-        this.numberRandom = gameData.numberRandom;
         this.linesInfo = linesInfo;
         this.quantityLines = linesInfo.length - 1;
         this.timeGameStart = Date.now();
@@ -26,7 +26,6 @@ export class GameManager {
         this.score = 0;
         this.ballsInfoAnimation = [];
         this.timerSetBalls = null;
-
     }
 
     movie() {
@@ -41,13 +40,12 @@ export class GameManager {
             this.ballsInfoAnimation = [];
             this.animation();
         }
-
     }
 
 
     setBall(){
         if (this.ballsCounter < this.countBalls) {
-            let numberLine = this.numberRandom.getRandomInteger(0, this.quantityLines);
+            let numberLine = Helper.numberRandom(0, this.quantityLines);
             let pointsBall = this.linesInfo[numberLine].lineCoords;
             this.ballsInfoAnimation.push( new AimationBall(pointsBall, numberLine, this.timeRedrawBall));
             this.ballsCounter++;
@@ -57,48 +55,27 @@ export class GameManager {
     }
 
     setTimeRemaining(timeSinceGame) {
-        let timeRemaining = parseInt(((this.timeGame - timeSinceGame) / 10), 10);
-        let timeValues = String(timeRemaining).split('');
+        let nodesLenght = this.timeRemainingNodes.length,
+            values = Helper.getFormated(parseInt(((this.timeGame - timeSinceGame) / 10), 10), nodesLenght);
 
-        switch (timeValues.length) {
-            case 3:
-                timeValues.unshift(0);
-                break;
-            case 2:
-                timeValues.unshift(0, 0);
-                break;
-            case 1:
-                timeValues.unshift(0, 0, 0);
-                break;
-            case 0:
-                timeValues.unshift(0, 0, 0, 0);
-                break;
-        }
-        this.timeRemainingNodes.forEach(function(timeNode, index){
-            timeNode.innerText = timeValues[index];
-        });
+        this.timeRemainingNodes
+            .forEach(function (node, index) {
+                node.innerText = values[index];
+            });
     }
 
     setTotalRun(score) {
-        let scoreValues = String(score).split('');
+        let nodesLenght = this.totalRunNodes.length,
+            values = Helper.getFormated(score, nodesLenght);
 
-        switch (scoreValues.length) {
-            case 2:
-                scoreValues.unshift(0);
-                break;
-            case 1:
-                scoreValues.unshift(0, 0);
-                break;
-        }
-
-        this.totalRunNodes.forEach(function(totalRunNode, index){
-            totalRunNode.innerText = scoreValues[index];
+        this.totalRunNodes.forEach(function(node, index){
+            node.innerText = values[index];
         });
     }
 
     showResultGame() {
-        let scoreMax = this.linesInfo[0].countBallsScore;
-        let nameStadium = this.linesInfo[0].name;
+        let scoreMax =  0;
+        let nameStadium = '';
         this.linesInfo.forEach((line) => {
             if(scoreMax < line.countBallsScore){
                 scoreMax = line.countBallsScore;

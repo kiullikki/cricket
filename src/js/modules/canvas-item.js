@@ -5,7 +5,67 @@
  */
 import {Line} from "./line";
 import {Ball} from "./ball";
+import {Helper} from "./helper";
 import {indiaMap} from "./background-info";
+
+// export class Game {
+//     constructor() {
+//         this.lines =[];
+//         //stads
+//         //balls
+//         // state
+//         // center
+//     }
+// }
+//
+// export class Manager {
+//     constructor(game) {
+//         this.game = game;
+//         this.renderer = new RenderManager(game);
+//         this.gManager = new GameManager(game);
+//     }
+//
+//     move() {
+//         gManager.move();
+//         renderer.render();
+//         window.requestAnimationFrame(this.move.bind(this));
+//     }
+// }
+//
+// export class RenderManager {
+//     constructor(game) {
+//         this.game = game;
+//     }
+//
+//     render() {
+//         // render background
+//         // render lines
+//         // render center
+//         // render balls
+//     }
+//
+//     renderLine(line) {
+//
+//     }
+// }
+//
+// export class GameManager {
+//     constructor(game) {
+//         this.game = game;
+//     }
+//
+//     move() {
+//         let timeSinceGame = Date.now() - this.timeGameStart;
+//         if (timeSinceGame <= this.timeGame) {
+//         this.game.state = 'Finished';
+//         return;
+//             }
+//
+//             //setBall
+//         }
+//     }
+// }
+
 
 export class CanvasItem {
     constructor(canvasData) {
@@ -59,10 +119,14 @@ export class CanvasItem {
         this.lineData.pathes = this.pathes;
 
         let qtStadiums = this.stadiums.length,
-            qtLines = this.lines.length;
+            qtLines = this.lines.length,
+            radius = this.sizes.center / 2 + 3;
 
         if (qtLines < qtStadiums) {
             this.stadiums.forEach((stadium, index) => {
+                this.lineData.lineCoords = Helper.getSegments(this.lineData.coordsStart, stadium.coords);
+                this.lineData.lineCoordsDraw = Helper.getDrawSegments(this.lineData.lineCoords, radius);
+
                 this.lines.push(new Line(stadium.coords, stadium.name, index, this.lineData));
             });
         } else {
