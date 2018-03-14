@@ -1,8 +1,6 @@
 import {CanvasItem} from "./modules/canvas-item";
 import {GameManager} from "./modules/game-manager";
 
-// const and variables
-
 const
     canvasNode = document.getElementById('game-field'),
     timeRemainingNodes = document.querySelectorAll('.game__number--time'),
@@ -11,6 +9,7 @@ const
     stadiumNameNode = gameResultNode.querySelector('.game__stadium'),
 
     canvasData = {
+        canvas: canvasNode,
 
         coordsStart: {
             x: "200",
@@ -19,12 +18,13 @@ const
 
         pathes: {
             bg: "img/india-map.svg",
-            marker: "M8 0c5 0 8 4 8 8 0 5-2 8-8 16-5-8-8-11-8-16 0-4 4-8 8-8zm0 4c3 0 5 2 5 4 0 3-2 5-5 5-2 0-4-2-4-5 0-2 2-4 4-4z",
+            marker: "img/marker.png",
             markerPoint: "img/marker-point.svg"
         },
 
         colors: {
             line: "#ffca00",
+            lineBall: "rgba(201, 59, 0, 0.5)",
             ball: "#ca3d00",
             center: "#6e7c35",
             centerCircuit: "#313817"
@@ -33,6 +33,8 @@ const
         drawElemSizes: {
             line: "3",
             center: "7",
+            centerStroke: "1",
+            lineBall: "2",
             ball: "10",
             markerWidth: "20",
             markerHeight: "29"
@@ -152,13 +154,6 @@ const
         ]
 },
 
-gameData = {
-    timeRedrawBall: 15,
-    createBallInterval: 300,
-    timeGame: 20000,
-    allBalls: 60
-},
-
 numberRandom = {
     numberRndOldest: 0,
     numberRndOld: 0,
@@ -172,10 +167,22 @@ numberRandom = {
         numberRandom.numberRndOldest = numberRandom.numberRndOld;
         numberRandom.numberRndOld = numberRnd;
         return numberRnd;}
+},
+
+gameData = {
+    timeRemainingNodes: timeRemainingNodes,
+    totalRunNodes: totalRunNodes,
+    stadiumNameNode: stadiumNameNode,
+    gameResultNode: gameResultNode,
+    numberRandom: numberRandom,
+    timeRedrawBall: 15,
+    createBallInterval: 300,
+    timeGame: 20000,
+    allBalls: 60
 };
 
 
-let canvasItem = new CanvasItem(canvasNode, canvasData);
+let canvasItem = new CanvasItem(canvasData);
 
 canvasItem.init().then(() => {
 
@@ -187,7 +194,6 @@ canvasItem.init().then(() => {
                 let pointsCurrent = ball.getNewCoords();
                 if (ball.flag) {
                     canvasItem.createBallPath(ball);
-                    canvasItem.createCenter();
                     canvasItem.createBall(pointsCurrent);
                 } else {
                     gameManager.ballsInfoAnimation.splice(index, 1);
@@ -196,7 +202,7 @@ canvasItem.init().then(() => {
         }
     };
 
-    let gameManager = new GameManager(gameData, numberRandom,  canvasItem.lines, timeRemainingNodes, totalRunNodes, stadiumNameNode, gameResultNode, animation);
+    let gameManager = new GameManager(gameData, canvasItem.lines, animation);
 
     let canvasClick = function (evt) {
        gameManager.onClick(evt, canvasData.coordsStart, canvasData.drawElemSizes.ball);

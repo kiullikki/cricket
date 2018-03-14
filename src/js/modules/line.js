@@ -3,11 +3,9 @@ import {indiaMap} from "./background-info";
 /**
  * Creates line item
  * @param coords: object;
- * coordsStart: object;
+ * name: string;
  * id: number;
- * context: canvas.context;
- * colors: object;
- * lineSz: number;
+ * LineData: object;
  */
 
 export class Line {
@@ -18,8 +16,8 @@ export class Line {
         this.id = id;
         this.ctx = lineData.ctx;
         this.color = lineData.color;
-        this.pathes = lineData.pathesMarker;
-        this.size = lineData.size;
+        this.pathes = lineData.pathes;
+        this.sizes = lineData.sizes;
         this.countBallsScore = 0;
         this.lineCoords = [];
 
@@ -29,7 +27,6 @@ export class Line {
     init(){
         this.draw(this.coords, this.coordsStart, this.pathes.marker);
         this.getSegments(this.coords, this.coordsStart);
-        //this.drawMarker(this.coords, 10);
     }
 
     draw(coords, coordsStart) {
@@ -37,32 +34,31 @@ export class Line {
         this.ctx.moveTo(coordsStart.x, coordsStart.y);
         this.ctx.bezierCurveTo(coords.xControlOne, coords.yControlOne, coords.xControlTwo, coords.yControlTwo, coords.xEnd, coords.yEnd);
         this.ctx.strokeStyle = this.color;
-        this.ctx.lineWidth = this.size;
+        this.ctx.lineWidth = this.sizes.line;
         this.ctx.stroke();
         this.ctx.closePath();
     }
 
     redraw(index, color) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.coordsStart.x, this.coordsStart.y);
-        for (let i = 0; i < index; i++) {
-            this.ctx.lineTo(this.lineCoords[i].x, this.lineCoords[i].y);
-        };
-        this.ctx.strokeStyle = color;
-        this.ctx.lineWidth = 2;
-        this.ctx.stroke();
-    }
+        let coordsStart = this.lineCoords[0],
+            flag = true,
+            radius = this.sizes.center / 2 + 3;
 
-    drawMarker(coords, scale) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(+coords.xEnd, +coords.yEnd);
-        this.ctx.lineTo(+coords.xEnd - scale, +coords.yEnd - scale);
-        this.ctx.arcTo(+coords.xEnd - scale, +coords.yEnd - scale, +coords.xEnd + scale, +coords.yEnd - scale, scale / 2);
-        this.ctx.lineTo(+coords.xEnd, +coords.yEnd);
-        this.ctx.closePath();
-        this.ctx.fillStyle = "#13AEF0";
-        this.ctx.strokeStyle = "#0D6991";
-        //this.ctx.fill();
+        for (let i = 1; i < index; i++) {
+            let distance = Math.sqrt((coordsStart.x - this.lineCoords[i].x) *(coordsStart.x - this.lineCoords[i].x) + (coordsStart.y - this.lineCoords[i].y) * (coordsStart.y - this.lineCoords[i].y));
+
+            if (distance >= radius) {
+                if(flag) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.lineCoords[i].x, this.lineCoords[i].y);
+                    flag = false;
+                }
+                this.ctx.lineTo(this.lineCoords[i].x, this.lineCoords[i].y);
+            }
+        }
+
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = this.sizes.lineBall;
         this.ctx.stroke();
     }
 

@@ -1,7 +1,8 @@
 /**
  * Creates line item
- * @param
- *
+ * @param: points: array;
+ * numberLine: number;
+ * timeOut: number;
  */
 
 export class AimationBall {

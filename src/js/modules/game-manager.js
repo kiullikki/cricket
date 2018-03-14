@@ -1,22 +1,24 @@
 /**
  * Creates game-manager
- * @param
+ * @param: gameData: object;
+ * linesInfo: array;
+ * animation: function;
  */
 
 import {AimationBall} from "./animation-ball";
 
 export class GameManager {
-    constructor(gameData, numberRandom, linesInfo, timeRemainingNodes, totalRunNodes, stadiumNameNode, gameResultNode, animation) {
+    constructor(gameData, linesInfo, animation) {
         this.animation = animation;
-        this.timeRemainingNodes = timeRemainingNodes;
-        this.totalRunNodes = totalRunNodes;
-        this.stadiumNameNode = stadiumNameNode;
-        this.gameResultNode = gameResultNode;
+        this.timeRemainingNodes = gameData.timeRemainingNodes;
+        this.totalRunNodes = gameData.totalRunNodes;
+        this.stadiumNameNode = gameData.stadiumNameNode;
+        this.gameResultNode = gameData.gameResultNode;
         this.timeRedrawBall = gameData.timeRedrawBall;
         this.createBallInterval = gameData.createBallInterval;
         this.timeGame = gameData.timeGame;
         this.countBalls = gameData.allBalls;
-        this.numberRandom = numberRandom;
+        this.numberRandom = gameData.numberRandom;
         this.linesInfo = linesInfo;
         this.quantityLines = linesInfo.length - 1;
         this.timeGameStart = Date.now();

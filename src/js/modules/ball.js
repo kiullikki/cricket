@@ -1,11 +1,13 @@
 /**
  * Creates ball item
- * @param
+ * @param context: canvas context;
+ * coord: object;
+ * size: number;
+ * color: string;
  */
 
 export class Ball {
-    constructor(context, coords, size, color, id) {
-        this.id = id;
+    constructor(context, coords, size, color) {
         this.coords = coords;
         this.ctx = context;
         this.size = size;

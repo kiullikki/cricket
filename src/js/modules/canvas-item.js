@@ -8,8 +8,8 @@ import {Ball} from "./ball";
 import {indiaMap} from "./background-info";
 
 export class CanvasItem {
-    constructor(canvasNode, canvasData) {
-        this.canvas = canvasNode;
+    constructor(canvasData) {
+        this.canvas = canvasData.canvas;
         this.ctx = this.canvas.getContext('2d');
         this.pathes = canvasData.pathes;
         this.stadiums = canvasData.stadiums;
@@ -18,11 +18,11 @@ export class CanvasItem {
         this.sizes = canvasData.drawElemSizes;
         this.lines = [];
         this.lineData = {};
-        this.rendered = false;
+
     }
 
     init() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.draw();
             this.createBall(this.coordsStart);
             resolve();
@@ -54,11 +54,14 @@ export class CanvasItem {
     createLines() {
         this.lineData.coordsStart = this.coordsStart;
         this.lineData.ctx = this.ctx;
-        this.lineData.size = this.sizes.line;
+        this.lineData.sizes = this.sizes;
         this.lineData.color = this.colors.line;
-        this.lineData.pathesMarker = this.pathes;
+        this.lineData.pathes = this.pathes;
 
-        if (this.lines.length < this.stadiums.length) {
+        let qtStadiums = this.stadiums.length,
+            qtLines = this.lines.length;
+
+        if (qtLines < qtStadiums) {
             this.stadiums.forEach((stadium, index) => {
                 this.lines.push(new Line(stadium.coords, stadium.name, index, this.lineData));
             });
@@ -74,7 +77,7 @@ export class CanvasItem {
     }
 
     createBallPath(ball) {
-        this.lines[ball.numberStadium].redraw(ball.index, this.colors.ball);
+        this.lines[ball.numberStadium].redraw(ball.index, this.colors.lineBall);
     }
 
     createCenter() {
@@ -82,7 +85,7 @@ export class CanvasItem {
         this.ctx.arc(this.coordsStart.x, this.coordsStart.y, this.sizes.center, 0, Math.PI * 2);
         this.ctx.fillStyle = this.colors.center;
         this.ctx.strokeStyle = this.colors.centerCircuit;
-        this.ctx.lineWidth = 1;
+        this.ctx.lineWidth = this.sizes.centerStroke;
         this.ctx.fill();
         this.ctx.stroke();
         this.ctx.closePath();
